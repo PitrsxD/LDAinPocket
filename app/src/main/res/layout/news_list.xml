@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/post_news_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent">
+
+    <com.android.volley.toolbox.NetworkImageView
+        style="@style/item"
+        android:id="@+id/post_image_imageview"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:contentDescription="@string/news_image_of_lda"
+        />
+
+    <TextView
+        style="@style/item"
+        android:id="@+id/post_date_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Date"
+        android:layout_below="@id/post_image_imageview"/>
+
+    <TextView
+        style="@style/Header"
+        android:id="@+id/post_title_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Header"
+        android:layout_toEndOf="@id/post_image_imageview"/>
+
+
+    <TextView
+        style="@style/item"
+        android:id="@+id/post_text_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..."
+        android:layout_toEndOf="@id/post_image_imageview"
+        android:layout_below="@id/post_title_textview"/>
+
+</RelativeLayout>

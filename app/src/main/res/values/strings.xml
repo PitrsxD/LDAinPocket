@@ -2,12 +2,16 @@
 
     <string name="app_name">LDA in Pocket</string>
 
+    //URL - LDA Wordpress API
+    <string name="setting_how_many_of_posts">per_page</string>
+    <string name="setting_number_of_posts">6</string>
+
     //Bottom Navigation and Title
     <string name="title_news">News</string>
     <string name="title_activities">Activities</string>
     <string name="title_go_abroad">Go Abroad</string>
     <string name="title_more">More</string>
     <string name="news_image_of_lda">News image of LDA</string>
-    <string name="setting_how_many_of_posts">per_page</string>
-    <string name="setting_number_of_posts">4</string>
+
+
 </resources>

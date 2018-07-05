@@ -6,13 +6,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -31,27 +32,27 @@ import hr.lda_verteneglio.ldainpocket.R;
 
 /**
  * The MIT License (MIT) - For ImageLoader with name VolleySingletion
-
- Copyright (c) 2014 Cypress North
-
- Permission is hereby granted, free of charge, to any person obtaining a copy of
- this software and associated documentation files (the "Software"), to deal in
- the Software without restriction, including without limitation the rights to
- use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- the Software, and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
- Original link to the source: https://github.com/CypressNorth/Volley-Singleton
+ * <p>
+ * Copyright (c) 2014 Cypress North
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ * <p>
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+ * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * <p>
+ * Original link to the source: https://github.com/CypressNorth/Volley-Singleton
  */
 
 public class NewsAdapter extends ArrayAdapter<NewsItem> {
@@ -92,7 +93,7 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         TextView postDateTextView = listItemView.findViewById(R.id.post_date_textview);
         TextView postTitleTextView = listItemView.findViewById(R.id.post_title_textview);
         TextView postTextTextView = listItemView.findViewById(R.id.post_text_textview);
-        RelativeLayout postNewsLayout = listItemView.findViewById(R.id.post_news_layout);
+        LinearLayout postNewsLayout = listItemView.findViewById(R.id.post_news_layout);
 
         final NewsItem currentNewsItem = getItem(position);
 
@@ -113,7 +114,7 @@ public class NewsAdapter extends ArrayAdapter<NewsItem> {
         String mTitle = sbTitle.toString();
 
         StringBuilder sbText = new StringBuilder();
-        sbText.append(currentNewsItem.getPostText()).setLength(160);
+        sbText.append(currentNewsItem.getPostText()).setLength(140);
         sbText.append("...");
         String mText = sbText.toString();
 

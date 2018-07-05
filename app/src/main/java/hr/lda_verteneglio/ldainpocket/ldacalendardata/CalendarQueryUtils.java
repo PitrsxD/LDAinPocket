@@ -1,6 +1,5 @@
-package hr.lda_verteneglio.ldainpocket.ldawebdata;
+package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
-import android.text.Html;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,9 +17,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsQueryUtils {
+public class CalendarQueryUtils {
 
-    public static List<NewsItem> fetchNews(String requestURL) {
+    public static List<CalendarItem> fetchEvents(String requestURL) {
 
         URL url = createURL(requestURL);
 
@@ -28,10 +27,10 @@ public class NewsQueryUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException inputE) {
-            Log.e ("NewsUtils", "Problem with closing InputStream", inputE);
+            Log.e("CalendarUtils", "Problem with closing InputStream", inputE);
         }
-        List<NewsItem> newsItem = extractNewsFromJson(jsonResponse);
-        return newsItem;
+        List<CalendarItem> calendarItem = extractCalendarFromJson(jsonResponse);
+        return calendarItem;
     }
 
     private static URL createURL(String stringURL) {
@@ -39,7 +38,7 @@ public class NewsQueryUtils {
         try {
             url = new URL(stringURL);
         } catch (MalformedURLException urlE) {
-            Log.e("NewsUtils","Error with parsing url to URL", urlE);
+            Log.e("CalendarUtils", "Error with parsing url to URL", urlE);
         }
         return url;
     }
@@ -60,17 +59,17 @@ public class NewsQueryUtils {
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-            Log.i("NewsUtils","Response code of web: " +
+            Log.i("CalendarUtils", "Response code of web: " +
                     String.valueOf(urlConnection.getResponseCode()));
 
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e ("NewsUtils","Error with connection: " + urlConnection.getResponseCode());
+                Log.e("CalendarUtils", "Error with connection: " + urlConnection.getResponseCode());
             }
         } catch (IOException conE) {
-            Log.e("NewsUtils","Problem with retrieving data", conE);
+            Log.e("CalendarUtils", "Problem with retrieving data", conE);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -79,11 +78,6 @@ public class NewsQueryUtils {
                 inputStream.close();
             }
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"posts\":");
-        sb.append(jsonResponse);
-        sb.append("}");
-        jsonResponse = sb.toString();
         return jsonResponse;
     }
 
@@ -101,43 +95,26 @@ public class NewsQueryUtils {
         return stringBuilderOutput.toString();
     }
 
-    public static List<NewsItem> extractNewsFromJson(String jsonResponse){
-        ArrayList<NewsItem> newsItem = new ArrayList<>();
+    public static List<CalendarItem> extractCalendarFromJson(String jsonResponse) {
+        ArrayList<CalendarItem> calendarItem = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(jsonResponse);
-            JSONArray postsArray = reader.getJSONArray("posts");
-            for (int i = 0; i < postsArray.length();i++) {
-                JSONObject arrayItem = postsArray.getJSONObject(i);
+            JSONArray eventsArray = reader.getJSONArray("items");
+            for (int i = 0; i < eventsArray.length(); i++) {
+                JSONObject items = eventsArray.getJSONObject(i);
+                String eventTitle = items.getString("summary");
+                String eventText = items.getString("description");
+                JSONObject startEvent = items.getJSONObject("start");
+                String eventDate = startEvent.getString("dateTime");
+                String eventLocation = items.getString("location");
 
-                JSONObject title = arrayItem.getJSONObject("title");
-                String titleRen = title.getString("rendered");
-                String titleRep = Html.fromHtml(titleRen).toString();
-
-                JSONObject content = arrayItem.getJSONObject("excerpt");
-                String contentRen = content.getString("rendered");
-                String contentRep = Html.fromHtml(contentRen).toString();
-
-                String date = arrayItem.getString("date");
-
-                String linkUrl = arrayItem.getString("link");
-
-                JSONObject imageObject = arrayItem.getJSONObject("better_featured_image");
-                JSONObject mediaDetails = imageObject.getJSONObject("media_details");
-                JSONObject sizes = mediaDetails.getJSONObject("sizes");
-                JSONObject thumbnail = sizes.getJSONObject("medium_large");
-                String imageUrl = thumbnail.getString("source_url");
-
-                if (!imageUrl.isEmpty()) {
-                    newsItem.add(new NewsItem(titleRep, contentRep, date, linkUrl, imageUrl));
-                    Log.i("NewsUtils", newsItem.toString());
-                } else {
-                    newsItem.add(new NewsItem(titleRep, contentRep, date, linkUrl));
-                    Log.i("NewsUtils", newsItem.toString());
-                }
+                calendarItem.add(new CalendarItem(eventTitle,eventText,eventDate,eventLocation));
+                Log.i("CalendarUtils", calendarItem.toString());
             }
         } catch (JSONException jsonE) {
-            Log.e("NewsUtils", "Problem with parsing JSON data to NewsItem items");
+            Log.e("CalendarUtils", "Problem with parsing JSON data to CalendarItem items");
         }
-        return newsItem;
+        return calendarItem;
     }
 }
+

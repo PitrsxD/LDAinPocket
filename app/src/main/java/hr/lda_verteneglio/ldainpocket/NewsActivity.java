@@ -2,6 +2,7 @@ package hr.lda_verteneglio.ldainpocket;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -26,9 +27,9 @@ import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsLoader;
 
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
-    private TextView mTextMessage;
+    final String urlEvents = "";
 
-    final String url = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
+    final String urlNews = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
 
     NewsAdapter newsAdapter;
 
@@ -40,16 +41,18 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_news:
-                    mTextMessage.setText(R.string.title_news);
                     return true;
                 case R.id.navigation_activities:
-                    mTextMessage.setText(R.string.title_activities);
+                    Intent intentActivities = new Intent(NewsActivity.this,ActivitiesActivity.class);
+                    startActivity(intentActivities);
                     return true;
                 case R.id.navigation_go_abroad:
-                    mTextMessage.setText(R.string.title_go_abroad);
+                    Intent intentGoAbroad = new Intent(NewsActivity.this,GoAbroadActivity.class);
+                    startActivity(intentGoAbroad);
                     return true;
                 case R.id.navigation_more:
-                    mTextMessage.setText(R.string.title_more);
+                    Intent intentMore = new Intent(NewsActivity.this,MoreActivity.class);
+                    startActivity(intentMore);
                     return true;
             }
             return false;
@@ -61,8 +64,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_news);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         newsAdapter = new NewsAdapter(this, new ArrayList<NewsItem>());
@@ -87,7 +90,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
                 getString(R.string.setting_number_of_posts)
         );
 
-        Uri baseUri = Uri.parse(url);
+        Uri baseUri = Uri.parse(urlNews);
 
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("per_page", numberOfposts);
@@ -111,5 +114,21 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<NewsItem>> loader) {
         Log.i("Loader", "reseted");
         newsAdapter.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        newsAdapter = new NewsAdapter(this, new ArrayList<NewsItem>());
+
+        newsListView = findViewById(R.id.news_list);
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nIfo = cm.getActiveNetworkInfo();
+
+        if (nIfo != null && nIfo.isConnectedOrConnecting()) {
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(0, null, this).forceLoad();
+        }
     }
 }

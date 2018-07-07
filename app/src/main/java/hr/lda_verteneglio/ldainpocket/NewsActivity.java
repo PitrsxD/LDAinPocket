@@ -27,8 +27,6 @@ import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsLoader;
 
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
-    final String urlEvents = "";
-
     final String urlNews = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
 
     NewsAdapter newsAdapter;

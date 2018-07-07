@@ -1,31 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_small">
 
-    <TextView
-        style="@style/Header"
-        android:id="@+id/event_title_textview"
+    <RelativeLayout
+        android:id="@+id/event1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/post_image_imageview"
-        tools:text="Header"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        style="@style/item"
-        android:id="@+id/event_date_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Date"
-        android:layout_below="@id/event_title_textview"/>
+        <TextView
+            android:id="@+id/event_title_textview1"
+            style="@style/Header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/post_image_imageview"
+            tools:text="Header" />
+
+        <TextView
+            android:id="@+id/event_date_textview1"
+            style="@style/item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/event_title_textview1"
+            tools:text="Date" />
+
+        <TextView
+            android:id="@+id/event_location_textview1"
+            style="@style/item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/event_title_textview1"
+            android:layout_toEndOf="@id/event_date_textview1"
+            android:gravity="end"
+            tools:text="Location, City" />
 
 
-    <TextView
-        style="@style/item"
-        android:id="@+id/event_text_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..."
-        android:layout_below="@id/event_date_textview"/>
+        <TextView
+            android:id="@+id/event_text_textview1"
+            style="@style/item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/event_date_textview1"
+            tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..." />
+    </RelativeLayout>
 
-</RelativeLayout>
+</android.support.v7.widget.CardView>

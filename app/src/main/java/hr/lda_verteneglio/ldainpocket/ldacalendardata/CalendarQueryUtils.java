@@ -1,5 +1,9 @@
 package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,14 +21,17 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarQueryUtils {
+public class CalendarQueryUtils implements AccountManagerCallback<>{
 
     public static List<CalendarItem> fetchEvents(String requestURL) {
 
         URL url = createURL(requestURL);
+        AccountManager am;
+        Bundle options = new Bundle();
 
         String jsonResponse = null;
         try {
+            am.getAuthToken(myAccount_, "Calendar",options,)
             jsonResponse = makeHttpRequest(url);
         } catch (IOException inputE) {
             Log.e("CalendarUtils", "Problem with closing InputStream", inputE);
@@ -58,6 +65,9 @@ public class CalendarQueryUtils {
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
+            urlConnection.addRequestProperty("client_id", "1057977611894-t0snj8jdu0o27dcp5dctfer" +
+                    "bmjkbltiq.apps.googleusercontent.com");
+            urlConnection.addRequestProperty();
             urlConnection.connect();
             Log.i("CalendarUtils", "Response code of web: " +
                     String.valueOf(urlConnection.getResponseCode()));
@@ -108,13 +118,18 @@ public class CalendarQueryUtils {
                 String eventDate = startEvent.getString("dateTime");
                 String eventLocation = items.getString("location");
 
-                calendarItem.add(new CalendarItem(eventTitle,eventText,eventDate,eventLocation));
+                calendarItem.add(new CalendarItem( eventTitle,eventText,eventDate,eventLocation));
                 Log.i("CalendarUtils", calendarItem.toString());
             }
         } catch (JSONException jsonE) {
             Log.e("CalendarUtils", "Problem with parsing JSON data to CalendarItem items");
         }
         return calendarItem;
+    }
+
+    @Override
+    public void run(AccountManagerFuture future) {
+
     }
 }
 

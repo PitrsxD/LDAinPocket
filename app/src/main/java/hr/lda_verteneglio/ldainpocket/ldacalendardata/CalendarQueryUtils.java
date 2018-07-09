@@ -1,8 +1,8 @@
 package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -21,17 +21,21 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarQueryUtils implements AccountManagerCallback<>{
+public class CalendarQueryUtils {
 
-    public static List<CalendarItem> fetchEvents(String requestURL) {
+    public static List<CalendarItem> fetchEvents(Context context, String requestURL) {
 
         URL url = createURL(requestURL);
-        AccountManager am;
-        Bundle options = new Bundle();
+
 
         String jsonResponse = null;
         try {
-            am.getAuthToken(myAccount_, "Calendar",options,)
+            AccountManager am = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+            ;
+            Bundle options = new Bundle();
+            Account[] myAccount_ = am.getAccountsByType("com.google");
+            String SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
+            //am.getAuthToken(myAccount_, "View your tasks",options, context, new OnTokenAcquired(), new Handler (new OnError()));
             jsonResponse = makeHttpRequest(url);
         } catch (IOException inputE) {
             Log.e("CalendarUtils", "Problem with closing InputStream", inputE);
@@ -67,7 +71,7 @@ public class CalendarQueryUtils implements AccountManagerCallback<>{
             urlConnection.setRequestMethod("GET");
             urlConnection.addRequestProperty("client_id", "1057977611894-t0snj8jdu0o27dcp5dctfer" +
                     "bmjkbltiq.apps.googleusercontent.com");
-            urlConnection.addRequestProperty();
+            //urlConnection.addRequestProperty();
             urlConnection.connect();
             Log.i("CalendarUtils", "Response code of web: " +
                     String.valueOf(urlConnection.getResponseCode()));
@@ -118,7 +122,7 @@ public class CalendarQueryUtils implements AccountManagerCallback<>{
                 String eventDate = startEvent.getString("dateTime");
                 String eventLocation = items.getString("location");
 
-                calendarItem.add(new CalendarItem( eventTitle,eventText,eventDate,eventLocation));
+                calendarItem.add(new CalendarItem(eventTitle, eventText, eventDate, eventLocation));
                 Log.i("CalendarUtils", calendarItem.toString());
             }
         } catch (JSONException jsonE) {
@@ -127,9 +131,5 @@ public class CalendarQueryUtils implements AccountManagerCallback<>{
         return calendarItem;
     }
 
-    @Override
-    public void run(AccountManagerFuture future) {
-
-    }
 }
 

@@ -24,7 +24,7 @@ public class CalendarLoader extends AsyncTaskLoader<List<CalendarItem>> {
         if (mUrl == null) {
             return null;
         }
-        List<CalendarItem> calenderList = CalendarQueryUtils.fetchEvents(mUrl);
+        List<CalendarItem> calenderList = CalendarQueryUtils.fetchEvents(getContext(),mUrl);
         return  calenderList;
     }
 

@@ -28,7 +28,7 @@ public class NewsQueryUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException inputE) {
-            Log.e ("NewsUtils", "Problem with closing InputStream", inputE);
+            Log.e("NewsUtils", "Problem with closing InputStream", inputE);
         }
         List<NewsItem> newsItem = extractNewsFromJson(jsonResponse);
         return newsItem;
@@ -39,7 +39,7 @@ public class NewsQueryUtils {
         try {
             url = new URL(stringURL);
         } catch (MalformedURLException urlE) {
-            Log.e("NewsUtils","Error with parsing url to URL", urlE);
+            Log.e("NewsUtils", "Error with parsing url to URL", urlE);
         }
         return url;
     }
@@ -60,17 +60,17 @@ public class NewsQueryUtils {
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-            Log.i("NewsUtils","Response code of web: " +
+            Log.i("NewsUtils", "Response code of web: " +
                     String.valueOf(urlConnection.getResponseCode()));
 
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e ("NewsUtils","Error with connection: " + urlConnection.getResponseCode());
+                Log.e("NewsUtils", "Error with connection: " + urlConnection.getResponseCode());
             }
         } catch (IOException conE) {
-            Log.e("NewsUtils","Problem with retrieving data", conE);
+            Log.e("NewsUtils", "Problem with retrieving data", conE);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -101,12 +101,12 @@ public class NewsQueryUtils {
         return stringBuilderOutput.toString();
     }
 
-    public static List<NewsItem> extractNewsFromJson(String jsonResponse){
+    public static List<NewsItem> extractNewsFromJson(String jsonResponse) {
         ArrayList<NewsItem> newsItem = new ArrayList<>();
         try {
             JSONObject reader = new JSONObject(jsonResponse);
             JSONArray postsArray = reader.getJSONArray("posts");
-            for (int i = 0; i < postsArray.length();i++) {
+            for (int i = 0; i < postsArray.length(); i++) {
                 JSONObject arrayItem = postsArray.getJSONObject(i);
 
                 JSONObject title = arrayItem.getJSONObject("title");

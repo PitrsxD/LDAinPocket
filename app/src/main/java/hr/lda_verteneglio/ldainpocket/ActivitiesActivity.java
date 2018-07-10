@@ -52,7 +52,7 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
     private final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/" +
             "lda.verteneglio%40gmail.com/events?";
 
-    private final String eventKey = "AIzaSyAmBiSSNU699ZZnPAMXmzhy4GfxalXfM0s";
+    private final String eventKey = "";
 
     CalendarAdapter calendarAdapter;
 

@@ -113,7 +113,12 @@ public class CalendarQueryUtils {
                 String eventTitle = items.getString("summary");
                 String eventText = items.getString("description");
                 JSONObject startEvent = items.getJSONObject("start");
-                String eventDate = startEvent.getString("dateTime");
+                String eventDate;
+                if (items.getString("start").contains("dateTime")) {
+                     eventDate = startEvent.getString("dateTime");
+                } else {
+                     eventDate = startEvent.getString("date");
+                }
                 String eventLocation = items.getString("location");
 
                 calendarItem.add(new CalendarItem(eventTitle, eventText, eventDate, eventLocation));

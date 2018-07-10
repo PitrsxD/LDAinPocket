@@ -1,51 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_small"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/event1"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_small">
+        android:layout_margin="@dimen/margin_small"
+        app:cardCornerRadius="7dp">
 
-        <TextView
-            android:id="@+id/event_title_textview1"
-            style="@style/Header"
+        <RelativeLayout
+            android:id="@+id/event_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/post_image_imageview"
-            tools:text="Header" />
+            android:layout_margin="@dimen/margin_small">
 
-        <TextView
-            android:id="@+id/event_date_textview1"
-            style="@style/item"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/event_title_textview1"
-            tools:text="Date" />
+            <TextView
+                android:id="@+id/event_title_textview1"
+                style="@style/Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/post_image_imageview"
+                tools:text="Header" />
 
-        <TextView
-            android:id="@+id/event_location_textview1"
-            style="@style/item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/event_title_textview1"
-            android:layout_toEndOf="@id/event_date_textview1"
-            android:gravity="end"
-            tools:text="Location, City" />
+            <TextView
+                android:id="@+id/event_date_textview1"
+                style="@style/item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_title_textview1"
+                tools:text="Date" />
+
+            <TextView
+                android:id="@+id/event_location_textview1"
+                style="@style/item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_title_textview1"
+                android:layout_toEndOf="@id/event_date_textview1"
+                android:gravity="end"
+                tools:text="Location, City" />
 
 
-        <TextView
-            android:id="@+id/event_text_textview1"
-            style="@style/item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/event_date_textview1"
-            tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..." />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/event_text_textview1"
+                style="@style/item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/event_date_textview1"
+                tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..." />
+        </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

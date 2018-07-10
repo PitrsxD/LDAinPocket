@@ -6,6 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +33,6 @@ public class CalendarQueryUtils {
 
         String jsonResponse = null;
         try {
-            AccountManager am = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
-            ;
-            Bundle options = new Bundle();
-            Account[] myAccount_ = am.getAccountsByType("com.google");
-            String SCOPE = "https://www.googleapis.com/auth/calendar.readonly";
-            //am.getAuthToken(myAccount_, "View your tasks",options, context, new OnTokenAcquired(), new Handler (new OnError()));
             jsonResponse = makeHttpRequest(url);
         } catch (IOException inputE) {
             Log.e("CalendarUtils", "Problem with closing InputStream", inputE);
@@ -69,9 +66,6 @@ public class CalendarQueryUtils {
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
-            urlConnection.addRequestProperty("client_id", "1057977611894-t0snj8jdu0o27dcp5dctfer" +
-                    "bmjkbltiq.apps.googleusercontent.com");
-            //urlConnection.addRequestProperty();
             urlConnection.connect();
             Log.i("CalendarUtils", "Response code of web: " +
                     String.valueOf(urlConnection.getResponseCode()));

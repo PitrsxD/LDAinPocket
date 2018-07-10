@@ -115,6 +115,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
+    protected void onPause() {
+        newsAdapter.clear();
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         newsAdapter = new NewsAdapter(this, new ArrayList<NewsItem>());

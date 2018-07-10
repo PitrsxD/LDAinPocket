@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -20,6 +21,8 @@ import java.util.List;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarAdapter;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarItem;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarLoader;
+import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsAdapter;
+import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 
 public class ActivitiesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<CalendarItem>> {
 
@@ -46,8 +49,10 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
         }
     };
 
-    final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/lda.verteneglio%40gmail.com" +
-            "/events?alwaysIncludeEmail=false&maxResults=2&orderBy=startTime&showDeleted=false&showHiddenInvitations=false&singleEvents=true";
+    private final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/" +
+            "lda.verteneglio%40gmail.com/events?";
+
+    private final String eventKey = "AIzaSyAmBiSSNU699ZZnPAMXmzhy4GfxalXfM0s";
 
     CalendarAdapter calendarAdapter;
 
@@ -78,7 +83,16 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public Loader<List<CalendarItem>> onCreateLoader(int id, Bundle args) {
-        return new CalendarLoader(this, urlEvents);
+
+        Uri baseUri = Uri.parse(urlEvents);
+
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("maxResults", "2");
+        uriBuilder.appendQueryParameter("orderBy", "startTime");
+        uriBuilder.appendQueryParameter("singleEvents", "true");
+        uriBuilder.appendQueryParameter("key", eventKey);
+
+        return new CalendarLoader(this, uriBuilder.toString());
     }
 
     @Override
@@ -96,5 +110,27 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
     @Override
     public void onLoaderReset(Loader<List<CalendarItem>> loader) {
         calendarAdapter.clear();
+    }
+
+    @Override
+    protected void onPause() {
+        calendarAdapter.clear();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        calendarAdapter = new CalendarAdapter(this, new ArrayList<CalendarItem>());
+
+        eventListView = findViewById(R.id.events_list);
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nIfo = cm.getActiveNetworkInfo();
+
+        if (nIfo != null && nIfo.isConnectedOrConnecting()) {
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(1, null, this).forceLoad();
+        }
     }
 }

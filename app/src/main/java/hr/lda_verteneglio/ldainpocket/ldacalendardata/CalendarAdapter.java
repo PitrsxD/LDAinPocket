@@ -9,11 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import hr.lda_verteneglio.ldainpocket.R;
-import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 
 public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
 
@@ -41,11 +42,30 @@ public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
 
         final CalendarItem currentCalendarItem = getItem(position);
 
-            eventTitle.setText(currentCalendarItem.getEventTitle());
-            eventStartDate.setText(currentCalendarItem.getEventDate());
-            eventLocation.setText(currentCalendarItem.getEventLocation());
-            eventDescription.setText(currentCalendarItem.getEventText());
+        eventTitle.setText(currentCalendarItem.getEventTitle());
 
+        String mDate = currentCalendarItem.getEventDate();
+        if (mDate != null) {
+            SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ");
+            try {
+                Date newDate = DATE_FORMAT.parse(mDate);
+                DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+                String date = DATE_FORMAT.format(newDate);
+                eventStartDate.setText(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        eventLocation.setText(currentCalendarItem.getEventLocation());
+
+        StringBuilder sbText = new StringBuilder();
+        sbText.append(currentCalendarItem.getEventText()).setLength(150);
+        if (currentCalendarItem.getEventText().length() > 150) {
+            sbText.append("...");
+        }
+        String mText = sbText.toString();
+        eventDescription.setText(mText);
 
 
         return listItemView;

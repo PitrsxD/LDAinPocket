@@ -75,7 +75,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(0, null, this).forceLoad();
+            loaderManager.initLoader(0, null, this);
         }
     }
 
@@ -95,6 +95,8 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         return new NewsLoader(this, uriBuilder.toString());
     }
+
+
 
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {

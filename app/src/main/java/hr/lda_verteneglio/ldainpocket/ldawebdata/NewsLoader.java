@@ -16,6 +16,11 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     }
 
     @Override
+    protected void onStartLoading() {
+        super.onStartLoading();
+    }
+
+    @Override
     public List<NewsItem> loadInBackground() {
         Log.i("Loader", "loaded");
         if (mUrl == null) {

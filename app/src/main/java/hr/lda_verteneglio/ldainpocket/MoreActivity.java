@@ -6,40 +6,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class MoreActivity extends AppCompatActivity {
+public class MoreActivity extends android.support.v4.app.Fragment {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        public boolean onNavigationItemSelected( MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_news:
-                    Intent intentNews = new Intent(MoreActivity.this,NewsActivity.class);
-                    startActivity(intentNews);
-                    return true;
-                case R.id.navigation_activities:
-                    Intent intentActivities = new Intent(MoreActivity.this,ActivitiesActivity.class);
-                    startActivity(intentActivities);
-                    return true;
-                case R.id.navigation_go_abroad:
-                    Intent intentGoAbroad = new Intent(MoreActivity.this,GoAbroadActivity.class);
-                    startActivity(intentGoAbroad);
-                    return true;
-                case R.id.navigation_more:
-                    return true;
-            }
-            return false;
-        }
-    };
+    View rootView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more);
-
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_more);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.activity_more, container, false);
+        //Thanks to context we will get name of Activity a start the right array list
+        return rootView;
     }
 }

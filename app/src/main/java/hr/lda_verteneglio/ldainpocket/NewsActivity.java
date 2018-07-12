@@ -1,9 +1,9 @@
 package hr.lda_verteneglio.ldainpocket;
 
-import android.app.LoaderManager;
+
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.content.Loader;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -11,12 +11,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsAdapter;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsLoader;
 
-public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
+public class NewsActivity extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
     final String urlNews = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
 
@@ -33,55 +34,36 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     ListView newsListView;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_news:
-                    return true;
-                case R.id.navigation_activities:
-                    Intent intentActivities = new Intent(NewsActivity.this,ActivitiesActivity.class);
-                    startActivity(intentActivities);
-                    return true;
-                case R.id.navigation_go_abroad:
-                    Intent intentGoAbroad = new Intent(NewsActivity.this,GoAbroadActivity.class);
-                    startActivity(intentGoAbroad);
-                    return true;
-                case R.id.navigation_more:
-                    Intent intentMore = new Intent(NewsActivity.this,MoreActivity.class);
-                    startActivity(intentMore);
-                    return true;
-            }
-            return false;
-        }
-    };
+    View rootView;
+
+    ProgressBar progressBarNews;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.activity_news, container, false);
+        //Thanks to context we will get name of Activity a start the right array list
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_news);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        newsAdapter = new NewsAdapter(this, new ArrayList<NewsItem>());
+        newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
 
-        newsListView = findViewById(R.id.news_list);
+        newsListView = rootView.findViewById(R.id.news_list);
+        progressBarNews = rootView.findViewById(R.id.progress_bar_news);
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this);
+            progressBarNews.setVisibility(View.VISIBLE);
         }
+        return rootView;
     }
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
         String numberOfposts = sharedPref.getString(
                 getString(R.string.setting_how_many_of_posts),
@@ -93,15 +75,15 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
         uriBuilder.appendQueryParameter("per_page", numberOfposts);
 
-        return new NewsLoader(this, uriBuilder.toString());
+        return new NewsLoader(this.getContext(), uriBuilder.toString());
     }
-
 
 
     @Override
     public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
         Log.i("Loader", "Finished");
         newsAdapter.clear();
+        progressBarNews.setVisibility(View.GONE);
 
         if (data != null && !data.isEmpty()) {
             newsAdapter.addAll(data);
@@ -117,24 +99,25 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         newsAdapter.clear();
         super.onPause();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        newsAdapter = new NewsAdapter(this, new ArrayList<NewsItem>());
+        newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
 
-        newsListView = findViewById(R.id.news_list);
+        newsListView = rootView.findViewById(R.id.news_list);
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this).forceLoad();
+            progressBarNews.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -1,19 +1,20 @@
 package hr.lda_verteneglio.ldainpocket;
 
-import android.app.LoaderManager;
+import android.support.v4.app.LoaderManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.Loader;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +25,8 @@ import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarLoader;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsAdapter;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 
-public class ActivitiesActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<CalendarItem>> {
+public class ActivitiesActivity extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<List<CalendarItem>> {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        public boolean onNavigationItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_news:
-                    Intent intentNews = new Intent(ActivitiesActivity.this, NewsActivity.class);
-                    startActivity(intentNews);
-                    return true;
-                case R.id.navigation_activities:
-                    return true;
-                case R.id.navigation_go_abroad:
-                    Intent intentGoAbroad = new Intent(ActivitiesActivity.this, GoAbroadActivity.class);
-                    startActivity(intentGoAbroad);
-                    return true;
-                case R.id.navigation_more:
-                    Intent intentMore = new Intent(ActivitiesActivity.this, MoreActivity.class);
-                    startActivity(intentMore);
-                    return true;
-            }
-            return false;
-        }
-    };
 
     private final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/" +
             "lda.verteneglio%40gmail.com/events?";
@@ -58,27 +37,33 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
 
     ListView eventListView;
 
+    View rootView;
+
+    Context context;
+
+    ProgressBar progressBarEvents;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activities);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.activity_activities, container, false);
+        //Thanks to context we will get name of Activity a start the right array list
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_activities);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        calendarAdapter = new CalendarAdapter(this.getContext(), new ArrayList<CalendarItem>());
 
-        calendarAdapter = new CalendarAdapter(this, new ArrayList<CalendarItem>());
+        eventListView = rootView.findViewById(R.id.events_list);
 
-        eventListView = findViewById(R.id.events_list);
+        progressBarEvents = rootView.findViewById(R.id.progress_bar_activities);
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(1, null, this).forceLoad();
+            progressBarEvents.setVisibility(View.VISIBLE);
         }
 
+        return rootView;
     }
 
     @Override
@@ -92,13 +77,14 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
         uriBuilder.appendQueryParameter("singleEvents", "true");
         uriBuilder.appendQueryParameter("key", eventKey);
 
-        return new CalendarLoader(this, uriBuilder.toString());
+        return new CalendarLoader(this.getContext(), uriBuilder.toString());
     }
 
     @Override
     public void onLoadFinished(Loader<List<CalendarItem>> loader, List<CalendarItem> data) {
         Log.i("Loader", "Finished");
         calendarAdapter.clear();
+        progressBarEvents.setVisibility(View.GONE);
 
         if (data != null && !data.isEmpty()) {
             calendarAdapter.addAll(data);
@@ -113,24 +99,28 @@ public class ActivitiesActivity extends AppCompatActivity implements LoaderManag
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         calendarAdapter.clear();
         super.onPause();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        calendarAdapter = new CalendarAdapter(this, new ArrayList<CalendarItem>());
+    public void onResume() {
+        context = getContext();
+        calendarAdapter = new CalendarAdapter(context, new ArrayList<CalendarItem>());
 
-        eventListView = findViewById(R.id.events_list);
+        eventListView = rootView.findViewById(R.id.events_list);
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(1, null, this).forceLoad();
+            loaderManager.initLoader(0, null, this).forceLoad();
+            progressBarEvents.setVisibility(View.VISIBLE);
+        super.onResume();
+
         }
     }
+
 }

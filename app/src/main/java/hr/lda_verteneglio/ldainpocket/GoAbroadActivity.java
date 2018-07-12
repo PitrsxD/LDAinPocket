@@ -8,42 +8,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
-public class GoAbroadActivity extends AppCompatActivity {
+public class GoAbroadActivity extends android.support.v4.app.Fragment {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        public boolean onNavigationItemSelected( MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_news:
-                    Intent intentNews = new Intent(GoAbroadActivity.this,NewsActivity.class);
-                    startActivity(intentNews);
-                    return true;
-                case R.id.navigation_activities:
-                    Intent intentActivities = new Intent(GoAbroadActivity.this,ActivitiesActivity.class);
-                    startActivity(intentActivities);
-                    return true;
-                case R.id.navigation_go_abroad:
-                    return true;
-                case R.id.navigation_more:
-                    Intent intentMore = new Intent(GoAbroadActivity.this,MoreActivity.class);
-                    startActivity(intentMore);
-                    return true;
-            }
-            return false;
-        }
-    };
+        View rootView;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_go_abroad);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.activity_go_abroad, container, false);
+        //Thanks to context we will get name of Activity a start the right array list
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setSelectedItemId(R.id.navigation_go_abroad);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-
+        return rootView;
     }
 }

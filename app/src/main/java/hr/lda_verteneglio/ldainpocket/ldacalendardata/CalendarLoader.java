@@ -1,13 +1,10 @@
 package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
 import java.util.List;
-
-import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
-import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsQueryUtils;
 
 public class CalendarLoader extends AsyncTaskLoader<List<CalendarItem>> {
 
@@ -24,8 +21,8 @@ public class CalendarLoader extends AsyncTaskLoader<List<CalendarItem>> {
         if (mUrl == null) {
             return null;
         }
-        List<CalendarItem> calenderList = CalendarQueryUtils.fetchEvents(getContext(),mUrl);
-        return  calenderList;
+        List<CalendarItem> calenderList = CalendarQueryUtils.fetchEvents(getContext(), mUrl);
+        return calenderList;
     }
 
 }

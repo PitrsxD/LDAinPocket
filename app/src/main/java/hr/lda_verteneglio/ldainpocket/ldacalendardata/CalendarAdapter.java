@@ -1,6 +1,8 @@
 package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +28,10 @@ public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
 
     String uriLocation;
 
+    TextView eventTitle;
+
+    TextView eventDescription;
+
     public CalendarAdapter(@NonNull Context context, List<CalendarItem> objects) {
         super(context, 0, objects);
     }
@@ -37,11 +45,12 @@ public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
                     R.layout.event_list, parent, false);
         }
 
-        TextView eventTitle = listItemView.findViewById(R.id.event_title_textview1);
+        eventTitle = listItemView.findViewById(R.id.event_title_textview1);
         TextView eventStartDate = listItemView.findViewById(R.id.event_date_textview1);
         TextView eventLocation = listItemView.findViewById(R.id.event_location_textview1);
-        TextView eventDescription = listItemView.findViewById(R.id.event_text_textview1);
+        eventDescription = listItemView.findViewById(R.id.event_text_textview1);
         RelativeLayout eventLayout = listItemView.findViewById(R.id.event_layout);
+        ImageButton eventNavigation = listItemView.findViewById(R.id.event_navigation_button);
 
         final CalendarItem currentCalendarItem = getItem(position);
 
@@ -67,14 +76,14 @@ public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
         eventLocation.setText(currentCalendarItem.getEventLocation());
 
         StringBuilder sbText = new StringBuilder();
-        sbText.append(currentCalendarItem.getEventText()).setLength(150);
-        if (currentCalendarItem.getEventText().length() > 150) {
+        sbText.append(currentCalendarItem.getEventText()).setLength(120);
+        if (currentCalendarItem.getEventText().length() > 120) {
             sbText.append("...");
         }
         String mText = sbText.toString();
         eventDescription.setText(mText);
 
-        eventLayout.setOnClickListener(new View.OnClickListener() {
+        eventNavigation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create a Uri from an intent string. Use the result to create an Intent.
@@ -86,6 +95,35 @@ public class CalendarAdapter extends ArrayAdapter<CalendarItem> {
                 mapIntent.setPackage("com.google.android.apps.maps");
                 // Attempt to start an activity that can handle the Intent
                 getContext().startActivity(mapIntent);
+            }
+        });
+
+        eventLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage(currentCalendarItem.getEventText());
+                builder.setPositiveButton(R.string.send_email, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent sendEmail = new Intent(Intent.ACTION_SENDTO);
+                        Uri uri = Uri.parse("mailto:info@lda-verteneglio.hr");
+                        sendEmail.setData(uri);
+                        sendEmail.putExtra(Intent.EXTRA_SUBJECT,currentCalendarItem.getEventTitle());
+                        getContext().startActivity(Intent.createChooser(sendEmail, "Send email"));
+                    }
+                });
+                builder.setNegativeButton(R.string.go_back, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dialog == null){
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                //Will show the alert dialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
 

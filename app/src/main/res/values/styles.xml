@@ -17,6 +17,7 @@
 
     <style name="item">
         <item name="android:layout_margin">@dimen/margin_small</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

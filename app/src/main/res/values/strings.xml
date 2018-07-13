@@ -13,6 +13,11 @@
     <string name="title_more">More</string>
     <string name="news_image_of_lda">News image of LDA</string>
     <string name="title_closest_events">Closest events</string>
+    <string name="send_email">Take a part!</string>
+    <string name="go_back">Go back</string>
+    <string name="click_to_open">Click to open</string>
+    <string name="title_partners">Activities of partners</string>
+    <string name="partner_logo">Partner logo</string>
 
 
 </resources>

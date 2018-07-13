@@ -13,39 +13,21 @@
         app:cardCornerRadius="7dp">
 
         <RelativeLayout
-            android:id="@+id/event_layout"
+            android:id="@+id/partner_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_small">
 
             <TextView
-                android:id="@+id/event_title_textview1"
+                android:id="@+id/partner_name"
                 style="@style/Header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/post_image_imageview"
                 tools:text="Header" />
 
-            <ImageButton
-                android:id="@+id/event_navigation_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/margin_small"
-                android:background="@color/cardview_light_background"
-                android:focusable="false"
-                android:src="@drawable/ic_navigation_arrow_black_24dp" />
-
             <TextView
-                android:id="@+id/event_date_textview1"
-                style="@style/item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/event_title_textview1"
-                tools:text="Date" />
-
-            <TextView
-                android:id="@+id/event_location_textview1"
+                android:id="@+id/partner_location_textview"
                 style="@style/item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,24 +37,43 @@
                 tools:text="Location, City" />
 
 
-            <TextView
-                android:id="@+id/event_text_textview1"
-                style="@style/item"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/partner_text_image_box"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/event_date_textview1"
-                tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Maecenas libero. Fusce tellus odio, dapibus..." />
+                android:layout_below="@id/partner_name"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/partner_description_short"
+                    style="@style/item"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    tools:text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien." />
+
+
+                <ImageView
+                    android:id="@+id/partner_logo"
+                    style="@style/item"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_weight="0.3"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/partner_logo"/>
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/event_click_to_detail"
+                android:id="@+id/partner_click_to_detail"
                 style="@style/item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@id/event_text_textview1"
+                android:layout_below="@id/partner_text_image_box"
                 android:gravity="end"
-                android:textSize="12sp"
-                android:text="@string/click_to_open" />
+                android:text="@string/click_to_open"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

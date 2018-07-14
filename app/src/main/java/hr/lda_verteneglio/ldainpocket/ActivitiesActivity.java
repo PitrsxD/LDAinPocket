@@ -1,6 +1,5 @@
 package hr.lda_verteneglio.ldainpocket;
 
-import android.support.v4.app.LoaderManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,13 +7,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +24,25 @@ import java.util.List;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarAdapter;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarItem;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarLoader;
-import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsAdapter;
-import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 
 public class ActivitiesActivity extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<List<CalendarItem>> {
 
+    //TODO: Parse database of partners
 
     private final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/" +
             "lda.verteneglio%40gmail.com/events?";
 
     private final String eventKey = "";
 
-    CalendarAdapter calendarAdapter;
+    private CalendarAdapter calendarAdapter;
 
-    ListView eventListView;
+    private ListView eventListView;
 
-    View rootView;
+    private View rootView;
 
-    Context context;
+    private Context context;
 
-    ProgressBar progressBarEvents;
+    private ProgressBar progressBarEvents;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
         calendarAdapter = new CalendarAdapter(this.getContext(), new ArrayList<CalendarItem>());
 
         eventListView = rootView.findViewById(R.id.events_list);
+        View emptyViewEvents = rootView.findViewById(R.id.empty_view_events);
+        eventListView.setEmptyView(emptyViewEvents);
 
         progressBarEvents = rootView.findViewById(R.id.progress_bar_activities);
 
@@ -61,7 +64,14 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(1, null, this).forceLoad();
             progressBarEvents.setVisibility(View.VISIBLE);
+        } else {
+            progressBarEvents.setVisibility(View.GONE);
+            ImageView emptyImageViewEvents = rootView.findViewById(R.id.empty_imageview_events);
+            TextView emptyTextViewEvents = rootView.findViewById(R.id.empty_textview_events);
+            emptyImageViewEvents.setImageResource(R.drawable.ic_signal_no_internet);
+            emptyTextViewEvents.setText(R.string.missing_connectivity);
         }
+
 
         return rootView;
     }
@@ -117,9 +127,14 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this).forceLoad();
-            progressBarEvents.setVisibility(View.VISIBLE);
-        super.onResume();
-
+            super.onResume();
+        } else {
+            progressBarEvents.setVisibility(View.GONE);
+            ImageView emptyImageViewEvents = rootView.findViewById(R.id.empty_imageview_events);
+            TextView emptyTextViewEvents = rootView.findViewById(R.id.empty_textview_events);
+            emptyImageViewEvents.setImageResource(R.drawable.ic_signal_no_internet);
+            emptyTextViewEvents.setText(R.string.missing_connectivity);
+            super.onResume();
         }
     }
 

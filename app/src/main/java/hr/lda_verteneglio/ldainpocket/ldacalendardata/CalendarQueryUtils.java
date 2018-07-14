@@ -1,13 +1,7 @@
 package hr.lda_verteneglio.ldainpocket.ldacalendardata;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
-
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,9 +109,9 @@ public class CalendarQueryUtils {
                 JSONObject startEvent = items.getJSONObject("start");
                 String eventDate;
                 if (items.getString("start").contains("dateTime")) {
-                     eventDate = startEvent.getString("dateTime");
+                    eventDate = startEvent.getString("dateTime");
                 } else {
-                     eventDate = startEvent.getString("date");
+                    eventDate = startEvent.getString("date");
                 }
                 String eventLocation = items.getString("location");
 

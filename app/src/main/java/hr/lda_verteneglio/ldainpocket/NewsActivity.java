@@ -16,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +32,13 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
 
     final String urlNews = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
 
-    NewsAdapter newsAdapter;
+    private NewsAdapter newsAdapter;
 
-    ListView newsListView;
+    private ListView newsListView;
 
-    View rootView;
+    private View rootView;
 
-    ProgressBar progressBarNews;
+    private ProgressBar progressBarNews;
 
 
     @Override
@@ -48,6 +50,9 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
 
         newsListView = rootView.findViewById(R.id.news_list);
+        View emptyViewPosts = rootView.findViewById(R.id.empty_view_posts);
+        newsListView.setEmptyView(emptyViewPosts);
+
         progressBarNews = rootView.findViewById(R.id.progress_bar_news);
 
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -57,7 +62,14 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this);
             progressBarNews.setVisibility(View.VISIBLE);
+        } else {
+            progressBarNews.setVisibility(View.GONE);
+            ImageView emptyImageViewPosts = rootView.findViewById(R.id.empty_imageview_posts);
+            TextView emptyTextViewPosts = rootView.findViewById(R.id.empty_textview_posts);
+            emptyImageViewPosts.setImageResource(R.drawable.ic_signal_no_internet);
+            emptyTextViewPosts.setText(R.string.missing_connectivity);
         }
+
         return rootView;
     }
 
@@ -106,7 +118,6 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
 
     @Override
     public void onResume() {
-        super.onResume();
         newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
 
         newsListView = rootView.findViewById(R.id.news_list);
@@ -118,6 +129,14 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this).forceLoad();
             progressBarNews.setVisibility(View.VISIBLE);
+            super.onResume();
+        } else {
+            progressBarNews.setVisibility(View.GONE);
+            ImageView emptyImageViewPosts = rootView.findViewById(R.id.empty_imageview_posts);
+            TextView emptyTextViewPosts = rootView.findViewById(R.id.empty_textview_posts);
+            emptyImageViewPosts.setImageResource(R.drawable.ic_signal_no_internet);
+            emptyTextViewPosts.setText(R.string.missing_connectivity);
+            super.onResume();
         }
     }
 }

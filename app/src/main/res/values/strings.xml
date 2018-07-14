@@ -18,6 +18,9 @@
     <string name="click_to_open">Click to open</string>
     <string name="title_partners">Activities of partners</string>
     <string name="partner_logo">Partner logo</string>
+    <string name="missing_connectivity">Oops, missing data! Is your internet fine?</string>
+    <string name="no_events_planned">Oops, mising data! Here are no events, but you can check you Facebook.</string>
+    <string name="no_posts">Oops, missing data! Please, contact us to solve the problem.</string>
 
 
 </resources>

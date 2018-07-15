@@ -61,7 +61,9 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this);
-            progressBarNews.setVisibility(View.VISIBLE);
+            if (newsListView == null) {
+                progressBarNews.setVisibility(View.VISIBLE);
+            }
         } else {
             progressBarNews.setVisibility(View.GONE);
             ImageView emptyImageViewPosts = rootView.findViewById(R.id.empty_imageview_posts);
@@ -128,7 +130,9 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this).forceLoad();
-            progressBarNews.setVisibility(View.VISIBLE);
+            if (newsListView == null) {
+                progressBarNews.setVisibility(View.VISIBLE);
+            }
             super.onResume();
         } else {
             progressBarNews.setVisibility(View.GONE);

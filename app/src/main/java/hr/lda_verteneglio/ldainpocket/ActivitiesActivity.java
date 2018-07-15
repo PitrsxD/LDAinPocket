@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarAdapter;
+import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarCridential;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarItem;
 import hr.lda_verteneglio.ldainpocket.ldacalendardata.CalendarLoader;
 
@@ -32,7 +33,7 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
     private final String urlEvents = "https://www.googleapis.com/calendar/v3/calendars/" +
             "lda.verteneglio%40gmail.com/events?";
 
-    private final String eventKey = "";
+    private final String eventKey = CalendarCridential.KEY;
 
     private CalendarAdapter calendarAdapter;
 

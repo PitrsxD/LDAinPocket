@@ -1,9 +1,7 @@
 package hr.lda_verteneglio.ldainpocket;
 
 
-import android.support.v4.app.LoaderManager;
 import android.content.Context;
-import android.support.v4.content.Loader;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -12,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +46,6 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         rootView = inflater.inflate(R.layout.activity_news, container, false);
         //Thanks to context we will get name of Activity a start the right array list
 
-
         newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
 
         newsListView = rootView.findViewById(R.id.news_list);
@@ -54,23 +53,6 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         newsListView.setEmptyView(emptyViewPosts);
 
         progressBarNews = rootView.findViewById(R.id.progress_bar_news);
-
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo nIfo = cm.getActiveNetworkInfo();
-
-        if (nIfo != null && nIfo.isConnectedOrConnecting()) {
-            LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(0, null, this);
-            if (newsListView == null) {
-                progressBarNews.setVisibility(View.VISIBLE);
-            }
-        } else {
-            progressBarNews.setVisibility(View.GONE);
-            ImageView emptyImageViewPosts = rootView.findViewById(R.id.empty_imageview_posts);
-            TextView emptyTextViewPosts = rootView.findViewById(R.id.empty_textview_posts);
-            emptyImageViewPosts.setImageResource(R.drawable.ic_signal_no_internet);
-            emptyTextViewPosts.setText(R.string.missing_connectivity);
-        }
 
         return rootView;
     }
@@ -112,35 +94,25 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
         newsAdapter.clear();
     }
 
-    @Override
-    public void onPause() {
-        newsAdapter.clear();
-        super.onPause();
-    }
 
     @Override
     public void onResume() {
-        newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());
-
-        newsListView = rootView.findViewById(R.id.news_list);
-
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
 
         if (nIfo != null && nIfo.isConnectedOrConnecting()) {
             LoaderManager loaderManager = getLoaderManager();
             loaderManager.initLoader(0, null, this).forceLoad();
-            if (newsListView == null) {
-                progressBarNews.setVisibility(View.VISIBLE);
-            }
-            super.onResume();
         } else {
             progressBarNews.setVisibility(View.GONE);
             ImageView emptyImageViewPosts = rootView.findViewById(R.id.empty_imageview_posts);
             TextView emptyTextViewPosts = rootView.findViewById(R.id.empty_textview_posts);
             emptyImageViewPosts.setImageResource(R.drawable.ic_signal_no_internet);
             emptyTextViewPosts.setText(R.string.missing_connectivity);
-            super.onResume();
         }
+
+        super.onResume();
     }
+
+
 }

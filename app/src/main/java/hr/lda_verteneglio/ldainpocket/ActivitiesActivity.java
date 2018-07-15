@@ -57,23 +57,7 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
         eventListView.setEmptyView(emptyViewEvents);
 
         progressBarEvents = rootView.findViewById(R.id.progress_bar_activities);
-
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo nIfo = cm.getActiveNetworkInfo();
-
-        if (nIfo != null && nIfo.isConnectedOrConnecting()) {
-            LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(1, null, this).forceLoad();
-            progressBarEvents.setVisibility(View.VISIBLE);
-        } else {
-            progressBarEvents.setVisibility(View.GONE);
-            ImageView emptyImageViewEvents = rootView.findViewById(R.id.empty_imageview_events);
-            TextView emptyTextViewEvents = rootView.findViewById(R.id.empty_textview_events);
-            emptyImageViewEvents.setImageResource(R.drawable.ic_signal_no_internet);
-            emptyTextViewEvents.setText(R.string.missing_connectivity);
-        }
-
-
+        
         return rootView;
     }
 
@@ -115,12 +99,10 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
         super.onPause();
     }
 
+
     @Override
     public void onResume() {
         context = getContext();
-        calendarAdapter = new CalendarAdapter(context, new ArrayList<CalendarItem>());
-
-        eventListView = rootView.findViewById(R.id.events_list);
 
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nIfo = cm.getActiveNetworkInfo();
@@ -138,5 +120,6 @@ public class ActivitiesActivity extends android.support.v4.app.Fragment implemen
             super.onResume();
         }
     }
+
 
 }

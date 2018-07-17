@@ -1,4 +1,4 @@
-package hr.lda_verteneglio.ldainpocket;
+package hr.lda_verteneglio.ldainpocket.ui;
 
 
 import android.content.Context;
@@ -24,11 +24,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import hr.lda_verteneglio.ldainpocket.R;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsAdapter;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsItem;
 import hr.lda_verteneglio.ldainpocket.ldawebdata.NewsLoader;
 
-public class NewsActivity extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
+public class NewsFragment extends android.support.v4.app.Fragment implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
     final String urlNews = "http://www.lda-verteneglio.hr/wp-json/wp/v2/posts?per_page=4";
 
@@ -43,7 +44,7 @@ public class NewsActivity extends android.support.v4.app.Fragment implements Loa
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_news, container, false);
+        rootView = inflater.inflate(R.layout.fragment_news, container, false);
         //Thanks to context we will get name of Activity a start the right array list
 
         newsAdapter = new NewsAdapter(this.getContext(), new ArrayList<NewsItem>());

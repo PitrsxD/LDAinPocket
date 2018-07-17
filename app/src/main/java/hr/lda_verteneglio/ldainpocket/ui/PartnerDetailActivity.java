@@ -1,4 +1,4 @@
-package hr.lda_verteneglio.ldainpocket;
+package hr.lda_verteneglio.ldainpocket.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

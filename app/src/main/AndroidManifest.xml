@@ -24,28 +24,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewsActivityOnCreate"
-            android:label="@string/title_news"
+            android:name=".ui.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivitiesActivityOnCreate"
-            android:label="@string/title_activities"
-            android:launchMode="singleTop"
+            android:name=".ui.PartnersDatabaseActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PartnerDetailActivity"
-            android:parentActivityName=".ActivitiesActivityOnCreate"
+            android:name=".ui.PartnerDetailActivity"
+            android:parentActivityName=".ui.PartnersDatabaseActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GoAbroadActivityOnCreate"
-            android:label="@string/title_go_abroad"
-            android:launchMode="singleTop"
+            android:name=".ui.GoAbroadEVSActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MoreActivityOnCreate"
-            android:label="@string/title_more"
-            android:launchMode="singleTop"
+            android:name=".ui.GoAbroadYExActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
     </application>
 

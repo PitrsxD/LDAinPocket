@@ -1,13 +1,20 @@
 package hr.lda_verteneglio.ldainpocket;
 
 import android.content.Context;
+import android.media.Image;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import hr.lda_verteneglio.ldainpocket.ui.ActivitiesFragment;
+import hr.lda_verteneglio.ldainpocket.ui.GoAbroadFragment;
+import hr.lda_verteneglio.ldainpocket.ui.MoreFragment;
+import hr.lda_verteneglio.ldainpocket.ui.NewsFragment;
 
 public class SimpleFragmentAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
-    private String tabTitles[] = new String[]{"Events", "Services"};
+
 
     public SimpleFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
@@ -23,15 +30,15 @@ public class SimpleFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public android.support.v4.app.Fragment getItem(int position) {
         if (position == 0) {
-            return new NewsActivity();
+            return new NewsFragment();
         } else if (position == 1) {
-            return new ActivitiesActivity();
+            return new ActivitiesFragment();
         } else if (position == 2) {
-            return new GoAbroadActivity();
+            return new GoAbroadFragment();
         } else
 
         {
-            return new MoreActivity();
+            return new MoreFragment();
         }
 
     }
@@ -46,20 +53,18 @@ public class SimpleFragmentAdapter extends FragmentPagerAdapter {
         // Generate title based on item position
         switch (position) {
             case 0:
-                mContext.getResources().getDrawable(R.drawable.ic_art_track_black_24dp);
                 return mContext.getString(R.string.title_news);
             case 1:
-                mContext.getResources().getDrawable(R.drawable.ic_event_black_24dp);
                 return mContext.getString(R.string.title_activities);
             case 2:
-                mContext.getResources().getDrawable(R.drawable.ic_flight_takeoff_black_24dp);
                 return mContext.getString(R.string.title_go_abroad);
             case 3:
-                mContext.getResources().getDrawable(R.drawable.ic_more_black_24dp);
                 return mContext.getString(R.string.title_more);
             default:
                 return null;
         }
     }
+
+
 }
 

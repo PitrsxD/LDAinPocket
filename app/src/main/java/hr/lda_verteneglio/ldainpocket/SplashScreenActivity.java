@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import hr.lda_verteneglio.ldainpocket.ui.MainActivity;
+
 public class SplashScreenActivity extends AppCompatActivity{
 
     private static int SPLASH_TIMEOUT = 3000;
@@ -17,7 +19,7 @@ public class SplashScreenActivity extends AppCompatActivity{
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainActivity = new Intent(SplashScreenActivity.this,NewsActivityOnCreate.class);
+                Intent mainActivity = new Intent(SplashScreenActivity.this,MainActivity.class);
                 startActivity(mainActivity);
                 finish();
             }

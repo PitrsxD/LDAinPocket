@@ -13,6 +13,7 @@
         <item name="android:layout_marginStart">@dimen/margin_small</item>
         <item name="android:layout_marginEnd">@dimen/margin_small</item>
         <item name="android:layout_marginTop">@dimen/margin_small</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="item">
@@ -30,6 +31,10 @@
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="MyCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">10sp</item>
     </style>
 
 </resources>

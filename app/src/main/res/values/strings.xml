@@ -25,6 +25,13 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="go_abroad_with_us_text">With our agency you can make a huge impact on your life. Go abroad and be there up to 1 year fro free\'</string>
+    <string name="title_youth_exchange">Youth Exchange</string>
+    <string name="title_evs">European Voluntary Service</string>
+    <string name="title_quiz">Let\'s play quiz - human rights!</string>
+    <string name="description_quiz">This quiz will test your knowledge. Don\'t be afraid to try it. We will tell you the right sollution anyway.</string>
+    <string name="title_credits">Credits</string>
+    <string name="description_credits">Those are the authors of this app!</string>
 
 
 </resources>
